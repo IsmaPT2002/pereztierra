@@ -44,6 +44,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionSalir.triggered.connect(events.Eventos.Salir)
         var.ui.actionSalirbar.triggered.connect(events.Eventos.Salir)
         var.ui.actionCrear_Copia_Seguridad.triggered.connect(events.Eventos.creaBackup)
+        var.ui.actionRestaurar_Copia_Seguridad.triggered.connect(events.Eventos.restauraBackup)
 
         '''
         Listados de eventos de menubar y menufile

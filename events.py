@@ -3,6 +3,9 @@ import zipfile
 from datetime import date, datetime
 from PyQt6 import QtWidgets
 
+import conexion
+
+
 class Eventos:
     def Salir(self):
         try:
@@ -54,3 +57,17 @@ class Eventos:
 
         except Exception as error:
             print('Error crear backup', error)
+
+    def restauraBackup(self):
+        try:
+            filename= var.dlgabrir.getOpenFileName(None, 'Restaurar Copia Seguridad', '', '*.zip;;All Files')
+            if var.dlgabrir.accept and filename != '':
+                file = filename[0]
+                with zipfile.ZipFile(str(file), 'r') as bbdd:
+                    bbdd.extractall(pwd=None)
+                bbdd.close()
+            conexion.Conexion.dbconexion()
+            conexion.Conexion.mostrarTabcarcli()
+
+        except Exception as error:
+            print('Error restaura backup', error)
