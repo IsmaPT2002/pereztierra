@@ -395,7 +395,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>img/descarga (1).png</normaloff>img/descarga (1).png</iconset>
+        <normaloff>img/limpiar.png</normaloff>img/limpiar.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -796,7 +796,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>img/descarga.png</normaloff>img/descarga.png</iconset>
+        <normaloff>img/buscar.png</normaloff>img/buscar.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -980,6 +980,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionSalirbar"/>
+   <addaction name="actionCrear_Copia_Seguridad"/>
+   <addaction name="actionRestaurar_Copia_Seguridad"/>
   </widget>
   <action name="actionSalir">
    <property name="text">
@@ -992,18 +994,26 @@
   <action name="actionSalirbar">
    <property name="icon">
     <iconset>
-     <normaloff>img/6437583.png</normaloff>img/6437583.png</iconset>
+     <normaloff>img/salir.png</normaloff>img/salir.png</iconset>
    </property>
    <property name="text">
     <string>Salir</string>
    </property>
   </action>
   <action name="actionCrear_Copia_Seguridad">
+   <property name="icon">
+    <iconset>
+     <normaloff>img/copia.png</normaloff>img/copia.png</iconset>
+   </property>
    <property name="text">
     <string>Crear Copia Seguridad</string>
    </property>
   </action>
   <action name="actionRestaurar_Copia_Seguridad">
+   <property name="icon">
+    <iconset>
+     <normaloff>img/restaurar.png</normaloff>img/restaurar.png</iconset>
+   </property>
    <property name="text">
     <string>Restaurar Copia Seguridad</string>
    </property>

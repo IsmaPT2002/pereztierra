@@ -60,7 +60,7 @@ class Eventos:
 
     def restauraBackup(self):
         try:
-            filename= var.dlgabrir.getOpenFileName(None, 'Restaurar Copia Seguridad', '', '*.zip;;All Files')
+            filename= var.dlgabrir.getOpenFileName(None, 'Restaurar Copia Seguridad', '', '*.zip;;All Files (*)')
             if var.dlgabrir.accept and filename != '':
                 file = filename[0]
                 with zipfile.ZipFile(str(file), 'r') as bbdd:

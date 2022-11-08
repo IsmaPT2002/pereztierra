@@ -25,7 +25,7 @@ class Ui_dlgSalir(object):
         self.lblImgaviso = QtWidgets.QLabel(dlgSalir)
         self.lblImgaviso.setGeometry(QtCore.QRect(120, 20, 61, 51))
         self.lblImgaviso.setText("")
-        self.lblImgaviso.setPixmap(QtGui.QPixmap("img/images.png"))
+        self.lblImgaviso.setPixmap(QtGui.QPixmap("img/advertencia.png"))
         self.lblImgaviso.setScaledContents(True)
         self.lblImgaviso.setObjectName("lblImgaviso")
         self.lblSalir = QtWidgets.QLabel(dlgSalir)
