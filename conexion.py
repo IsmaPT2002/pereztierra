@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PyQt6 import QtWidgets, QtSql
 import var
 from ventMain import *
@@ -98,7 +100,7 @@ class Conexion():
             index=0
             query =QtSql.QSqlQuery()
             query.prepare('select matricula, dnicli, marca, modelo, motor from '
-                          'coches order by marca, modelo')
+                          'coches where fechabajacar is null order by marca, modelo')
             if query.exec():
                 while query.next():
                     var.ui.tbClientes.setRowCount(index+1) #creamos la fila
@@ -117,3 +119,86 @@ class Conexion():
 
         except Exception as error:
             print('Problema mostrar listado coches clientes', error)
+
+    def oneCli(dni):
+            try:
+                registro = []
+                query = QtSql.QSqlQuery()
+                query.prepare('select dni, nombre, alta, direccion, provincia, municipio, pago from clientes where dni = :dni')
+                query.bindValue(':dni', str(dni))
+                if query.exec():
+                    while query.next():
+                        for i in range(6):
+                            registro.append(str(query.value(i)))
+                return registro
+
+            except Exception as error:
+                print('Error en oneCli', error)
+
+    def altaExcelCoche(new):
+        try:
+            query1 = QtSql.QSqlQuery()
+            query1.prepare('insert into coches (matricula, dnicli, marca, modelo, motor) '
+                            ' VALUES (:matricula, :dnicli, :marca, :modelo, :motor)')
+            query1.bindValue(':matricula', str(new[0]))
+            query1.bindValue(':dnicli', str(new[1]))
+            query1.bindValue(':marca', str(new[2]))
+            query1.bindValue(':modelo', str(new[3]))
+            query1.bindValue(':motor', str(new[4]))
+            if query1.exec():
+                pass
+        except Exception as error:
+            print('Error en altaExcelCoche', error)
+
+    def borraCli(dni):
+        try:
+            fecha = datetime.now()
+            fecha = fecha.strftime('%d.%m.%Y.%H.%M.%S')
+            query1 = QtSql.QSqlQuery()
+            query1.prepare('update clientes set fechabajacli = :fecha where dni = :dni')
+            query1.bindValue(':fecha', str(fecha))
+            query1.bindValue(':dni', str(dni))
+            if query1.exec():
+                pass
+            query2 = QtSql.QSqlQuery()
+            query2.prepare('update coches set fechabajacar = :fecha where dnicli = :dni')
+            query2.bindValue(':fecha', str(fecha))
+            query2.bindValue(':dni', str(dni))
+            if query2.exec():
+                msg = QtWidgets.QMessageBox()
+                msg.setWindowTitle('Aviso')
+                msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                msg.setText('Cliente dado de baja')
+                msg.exec()
+                Conexion.mostrarTabcarcli()
+            else:
+                msg = QtWidgets.QMessageBox()
+                msg.setWindowTitle('Aviso')
+                msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                msg.setText(query2.lastError().text())
+                msg.exec()
+            '''
+            query = QtSql.QSqlQuery()
+            query.prepare('delete from coches where dnicli = :dni')
+            query.bindValue(':dni', str(dni))
+            if query.exec():
+                pass
+                query = QtSql.QSqlQuery()
+                query.prepare('delete from clientes where dni = :dni')
+                query.bindValue(':dni', str(dni))
+            if query.exec():
+                msg = QtWidgets.QMessageBox()
+                msg.setWindowTitle('Aviso')
+                msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                msg.setText('Cliente dado de baja')
+                msg.exec()
+                Conexion.mostrarTabcarcli()
+            else:
+                msg = QtWidgets.QMessageBox()
+                msg.setWindowTitle('Aviso')
+                msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                msg.setText(query.lastError().text())
+                msg.exec()
+            '''
+        except Exception as error:
+            print('Borra cliente en conexion', error)

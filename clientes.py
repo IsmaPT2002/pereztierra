@@ -129,8 +129,53 @@ class Clientes():
                        var.ui.txtMarca, var.ui.txtModelo]
             for i in cliente:
                 i.setText('')
-            for i in var.ui.btnGrouppago.buttons():
+            var.ui.cmbProcli.setCurrentText('')
+            var.ui.cmbMunicli.setCurrentText('')
+            checks = [var.ui.chkEfectivo, var.ui.chkFactura, var.ui.chkTrans]
+            for i in checks:
                 i.setChecked(False)
             conexion.Conexion.cargarProv(self)
         except Exception as error:
             print('Error limpiar cliente: ', error)
+
+    def cargaCliente(self):
+        try:
+            Clientes.limpiaCli()
+            fila = var.ui.tbClientes.selectedItems()
+            row = [dato.text() for dato in fila]
+            datos = [var.ui.txtDni, var.ui.txtCar, var.ui.txtMarca, var.ui.txtModelo]
+            for i, dato in enumerate(datos):
+                dato.setText(row[i])
+            if row[4] == 'Gasolina':
+                var.ui.rbtGasolina.setChecked(True)
+            elif row[4] == 'Diesel':
+                var.ui.rbtDiesel.setChecked(True)
+            elif row[4] == 'Hibrido':
+                var.ui.rbtHibrido.setChecked(True)
+            elif row[4] == 'Electrico':
+                var.ui.rbtElectrico.setChecked(True)
+            registro = conexion.Conexion.oneCli(row[0])
+            print(registro)
+            var.ui.txtNombre.setText(registro[1])
+            var.ui.txtFechaltacli.setText(registro[2])
+            var.ui.txtDircli.setText(registro[3])
+            var.ui.cmbProcli.setCurrentText(registro[4])
+            var.ui.cmbMunicli.setCurrentText(registro[5])
+            if registro[5] == 'Efectivo':
+                var.ui.chkEfectivo.setChecked(True)
+            elif registro[5] == 'Factura':
+                var.ui.chkFactura.setChecked(True)
+            elif registro[5] == 'Transferencia':
+                var.ui.chkTrans.setChecked(True)
+
+        except Exception as error:
+            print('Error carga cliente', error)
+
+    def borraCli(self):
+        try:
+            dni = var.ui.txtDni.text()
+            conexion.Conexion.borraCli(dni)
+            conexion.Conexion.mostrarTabcarcli(self)
+
+        except Exception as error:
+            print('Error baja Cliente y sus coches', error)
