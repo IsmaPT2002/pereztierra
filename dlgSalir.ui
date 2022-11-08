@@ -53,14 +53,14 @@
      <x>120</x>
      <y>20</y>
      <width>61</width>
-     <height>51</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>img/images.png</pixmap>
+    <pixmap>img/advertencia.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
