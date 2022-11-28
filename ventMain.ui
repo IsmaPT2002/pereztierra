@@ -993,6 +993,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionCambio_de_propietario_de_coche"/>
    <addaction name="actionCrear_Copia_Seguridad"/>
    <addaction name="actionRestaurar_Copia_Seguridad"/>
    <addaction name="actionSalirbar"/>
@@ -1046,6 +1047,15 @@
    </property>
    <property name="shortcut">
     <string>Alt+I</string>
+   </property>
+  </action>
+  <action name="actionCambio_de_propietario_de_coche">
+   <property name="icon">
+    <iconset>
+     <normaloff>img/cambio coche.png</normaloff>img/cambio coche.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cambio de propietario de coche</string>
    </property>
   </action>
  </widget>
