@@ -202,3 +202,48 @@ class Conexion():
             '''
         except Exception as error:
             print('Borra cliente en conexion', error)
+
+    @staticmethod
+    def modificaCli(modcli, modcar):
+        try:
+            query = QtSql.QSqlQuery()
+            query.prepare('update clientes set nombre = :nombre, alta = :alta, direccion = :direccion, '
+                          'provincia = :provincia, municipio = :municipio, pago = :pago where dni = :dni')
+            query.bindValue(':dni', str(modcli[0]))
+            query.bindValue(':nombre', str(modcli[1]))
+            query.bindValue(':alta', str(modcli[2]))
+            query.bindValue(':direccion', str(modcli[3]))
+            query.bindValue(':provincia', str(modcli[4]))
+            query.bindValue(':municipio', str(modcli[5]))
+            query.bindValue(':pago', str(modcar[6]))
+            if query.exec():
+                query1 = QtSql.QSqlQuery()
+                query1.prepare('update coches set dnicli = :dnicli, marca = :marca, '
+                              'modelo = :modelo, motor = :motor where matricula = :matricula')
+                query1.bindValue(':matricula', str(modcar[0]))
+                query1.bindValue(':dni', str(modcli[0]))
+                query1.bindValue(':marca', str(modcar[1]))
+                query1.bindValue(':modelo', str(modcar[2]))
+                query1.bindValue(':motor', str(modcar[3]))
+                if query1.exec():
+                    msg = QtWidgets.QMessageBox()
+                    msg.setWindowTitle('Aviso')
+                    msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
+                    msg.setText('Cliente modificado')
+                    msg.exec()
+                    Conexion.mostrarTabcarcli()
+                else:
+                    msg = QtWidgets.QMessageBox()
+                    msg.setWindowTitle('Aviso')
+                    msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                    msg.setText(query.lastError().text())
+                    msg.exec()
+            else:
+                msg = QtWidgets.QMessageBox()
+                msg.setWindowTitle('Aviso')
+                msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+                msg.setText(query.lastError().text())
+                msg.exec()
+
+        except Exception as error:
+            print('Error en modificar cliente', error)

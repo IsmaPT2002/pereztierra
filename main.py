@@ -75,7 +75,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionCrear_Copia_Seguridad.triggered.connect(events.Eventos.creaBackup)
         var.ui.actionRestaurar_Copia_Seguridad.triggered.connect(events.Eventos.restauraBackup)
         var.ui.actionExportar_Datos.triggered.connect(events.Eventos.exportarDatos)
-        var.ui.actionImportar_Datos.triggered.connect(events.Eventos.importarDatos)
+        #var.ui.actionImportar_Datos.triggered.connect(events.Eventos.importarDatos)
 
         '''
         Listados de eventos de menubar y menufile
@@ -86,6 +86,7 @@ class Main(QtWidgets.QMainWindow):
         var.ui.btnFechaltacli.clicked.connect(events.Eventos.abrirCalendar)
         var.ui.btnLimpiacli.clicked.connect(clientes.Clientes.limpiaCli)
         var.ui.btnBorracli.clicked.connect(clientes.Clientes.borraCli)
+        var.ui.btnModifcli.clicked.connect(clientes.Clientes.modifCli)
 
         var.ui.txtMarca.editingFinished.connect(clientes.Clientes.mayusculaPalabra)
         var.ui.txtModelo.editingFinished.connect(clientes.Clientes.mayusculaPalabra)

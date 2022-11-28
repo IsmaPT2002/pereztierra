@@ -179,3 +179,35 @@ class Clientes():
 
         except Exception as error:
             print('Error baja Cliente y sus coches', error)
+
+    def modifCli(self):
+        try:
+            modcli = []
+            modcar = []
+            cliente = [var.ui.txtDni, var.ui.txtNombre, var.ui.txtFechaltacli, var.ui.txtDircli]
+            for i in cliente:
+                modcli.append(i.text())
+            prov = var.ui.cmbProcli.currentText()
+            modcli.append(prov)
+            muni = var.ui.cmbMunicli.currentText()
+            modcli.append(muni)
+            pagos = []
+            if var.ui.chkEfectivo.isChecked():
+                pagos.append('Efectivo')
+            if var.ui.chkFactura.isChecked():
+                pagos.append('Factura')
+            if var.ui.chkTrans.isChecked():
+                pagos.append('Transferencia')
+            pagos = set(pagos)  #evita duplicados
+            modcli.append('; '.join(pagos))
+            car = [var.ui.txtCar, var.ui.txtMarca, var.ui.txtModelo]
+            for i in car:
+                modcar.append(i.text())
+            motor = Clientes.checkMotor()
+            modcar.append(motor)
+            conexion.Conexion.modificaCli(modcli, modcar)
+            conexion.Conexion.mostrarTabcarcli()
+
+
+        except Exception as error:
+            print('Error modificar datos cliente y sus coches', error)
