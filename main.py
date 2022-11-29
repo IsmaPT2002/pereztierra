@@ -30,14 +30,15 @@ class DialogCalendar(QtWidgets.QDialog):
         var.dlgcalendar.Calendar.setSelectedDate(QtCore.QDate(ano, mes, dia))
         var.dlgcalendar.Calendar.clicked.connect(clientes.Clientes.cargaFecha)
 
-class DialogAbrir(QtWidgets.QFileDialog):
-	def __init__(self):
-		super(DialogAbrir, self).__init__()
 class DialogSalir(QtWidgets.QDialog):
     def __init__(self):
         super(DialogSalir, self).__init__()
         var.avisosalir = Ui_dlgSalir()
         var.avisosalir.setupUi(self)
+
+class DialogAbrir(QtWidgets.QFileDialog):
+	def __init__(self):
+		super(DialogAbrir, self).__init__()
 
 class DialogExportar(QtWidgets.QDialog):
     def __init__(self):

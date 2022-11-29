@@ -3,9 +3,11 @@ import zipfile, xlwt
 from datetime import date, datetime
 import xlrd
 from PyQt6 import QtWidgets, QtSql
+from xlwt import Workbook
 
 import clientes
 import conexion
+import main
 from main import DialogExportar, DialogAbrir
 
 
@@ -80,7 +82,7 @@ class Eventos:
 
             dlgExportar = DialogExportar()
             if dlgExportar.exec():
-                if not dlgExportar.ui.checkboxCoches.isChecked() and not dlgExportar.ui.checkboxClientes.isChecked():
+                if not dlgExportar.ui.chkCoches.isChecked() and not dlgExportar.ui.chkClientes.isChecked():
                     msg = QtWidgets.QMessageBox()
                     msg.setWindowTitle('Aviso')
                     msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
@@ -89,12 +91,10 @@ class Eventos:
                     self.exportarDatos()
                     return
                 dialogo_abrir = DialogAbrir()
-                directorio = dialogo_abrir.getSaveFileName(self, "Exportar a Excel", "",
+                directorio = dialogo_abrir.getSaveFileName(None, "Exportar a Excel", "",
                                                            "Excel (*.xls)")
                 if directorio[0]:
-                    self.servicioBackup.exportar_excel(directorio[0],
-                                                       dlgExportar.ui.checkboxClientes.isChecked(),
-                                                       dlgExportar.ui.checkboxCoches.isChecked())
+                    self.exportar_excel(directorio[0], dlgExportar.ui.chkClientes.isChecked(), dlgExportar.ui.chkCoches.isChecked())
                     msg = QtWidgets.QMessageBox()
                     msg.setModal(True)
                     msg.setWindowTitle('Aviso')
@@ -139,8 +139,69 @@ class Eventos:
                     msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
                     msg.setText('Exportacion de Clientes Realizada')
                     msg.exec()
+                    '''
         except Exception as error:
             print("Error exportar datos", error)
+
+
+    def exportar_excel(self, ruta: str, clientes: bool, coches: bool) -> bool:
+        try:
+            wb = Workbook()
+            if clientes:
+                self.exportar_clientes_excel(wb)
+            if coches:
+                self.exportar_coches_excel(wb)
+            wb.save(ruta)
+        except Exception as error:
+            print("Error al exportar a excel: ", error)
+            return False
+
+    def exportar_clientes_excel(self, wb: Workbook) -> bool:
+        try:
+            hoja_clientes = wb.add_sheet("clientes")
+            elementos = ["DNI", "Nombre", "Fecha alta", "Direccion", "Provincia", "Municipio",
+                         "Admite efectivo", "Admite factura", "Admite transferencia"]
+            for i, e in enumerate(elementos):
+                hoja_clientes.write(0, i, e)
+
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM clientes ORDER BY alta")
+            if query.exec():
+                fila = 1
+                while query.next():
+                    for i in range(0, 9):
+                        hoja_clientes.write(fila, i, query.value(i))
+                    fila += 1
+
+            return True
+        except Exception as error:
+            print("Error al exportar a excel: ", error)
+            return False
+
+    def exportar_coches_excel(self, wb: Workbook) -> bool:
+        try:
+            hoja_coches = wb.add_sheet("coches")
+            hoja_coches.write(0, 0, "Matricula")
+            hoja_coches.write(0, 1, "DNI cliente")
+            hoja_coches.write(0, 2, "Marca")
+            hoja_coches.write(0, 3, "Modelo")
+            hoja_coches.write(0, 4, "Tipo motor")
+
+            query = QtSql.QSqlQuery()
+            query.prepare("SELECT * FROM coches ORDER BY matricula")
+            if query.exec():
+                fila = 1
+                while query.next():
+                    hoja_coches.write(fila, 0, query.value(0))
+                    hoja_coches.write(fila, 1, query.value(1))
+                    hoja_coches.write(fila, 2, query.value(2))
+                    hoja_coches.write(fila, 3, query.value(3))
+                    hoja_coches.write(fila, 4, query.value(4))
+                    fila += 1
+            return True
+        except Exception as error:
+            print("Error al exportar a excel: ", error)
+            return False
 
     def importarDatos(self):
         try:
@@ -168,6 +229,5 @@ class Eventos:
                 msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
                 msg.setText('Importacion de Datos Realizada')
                 msg.exec()
-                '''
         except Exception as error:
             print("Error importar datos", error)
