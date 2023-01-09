@@ -4,7 +4,7 @@ from ventMain import *
 from dlgSalir import *
 from dlgCalendar import *
 from dlgDatos import *
-import sys,var,events,clientes
+import sys,var,events,clientes, conexion, informes
 from datetime import *
 
 class FileDialogAbrir(QtWidgets.QFileDialog):
@@ -77,6 +77,8 @@ class Main(QtWidgets.QMainWindow):
         var.ui.actionRestaurar_Copia_Seguridad.triggered.connect(events.Eventos.restauraBackup)
         var.ui.actionExportar_Datos.triggered.connect(events.Eventos.exportarDatos)
         var.ui.actionImportar_Datos.triggered.connect(events.Eventos.importarDatos)
+        var.ui.actionInformes_Clientes.triggered.connect(informes.Informes.listClientes)
+        var.ui.actionInformes_Vehiculos.triggered.connect(informes.Informes.listAutos)
 
         '''
         Listados de eventos de menubar y menufile
