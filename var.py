@@ -11,3 +11,4 @@ global dlgcalendar
 global dlgabrir
 global dlgdatos
 global bbdd
+global report

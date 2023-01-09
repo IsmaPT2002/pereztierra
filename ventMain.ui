@@ -980,8 +980,22 @@
     <addaction name="actionExportar_Datos"/>
     <addaction name="actionImportar_Datos"/>
    </widget>
+   <widget class="QMenu" name="menuInformes">
+    <property name="title">
+     <string>Informes</string>
+    </property>
+    <addaction name="actionInformes_Clientes"/>
+    <addaction name="actionInformes_Vehiculos"/>
+   </widget>
+   <widget class="QMenu" name="menuAcerca_de">
+    <property name="title">
+     <string>Acerca de</string>
+    </property>
+   </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuHerramientas"/>
+   <addaction name="menuInformes"/>
+   <addaction name="menuAcerca_de"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -1056,6 +1070,16 @@
    </property>
    <property name="text">
     <string>Cambio de propietario de coche</string>
+   </property>
+  </action>
+  <action name="actionInformes_Clientes">
+   <property name="text">
+    <string>Informes Clientes</string>
+   </property>
+  </action>
+  <action name="actionInformes_Vehiculos">
+   <property name="text">
+    <string>Informes Vehiculos</string>
    </property>
   </action>
  </widget>
