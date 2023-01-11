@@ -7,7 +7,6 @@ from xlwt import Workbook
 
 import clientes
 import conexion
-import main
 from main import DialogExportar, DialogAbrir
 
 

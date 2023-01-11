@@ -1,5 +1,5 @@
-import os, var, conexion
-from PyQt6 import QtSql
+import os, var
+from PyQt6 import QtSql, QtWidgets
 from reportlab.pdfgen import canvas
 from datetime import datetime
 
@@ -14,17 +14,17 @@ class Informes:
             items = ['DNI', 'Nombre', 'Dirección', 'Municipio', 'Provincia']
             var.report.setFont('Helvetica-Bold', size=10)
             var.report.drawString(60, 700, str(items[0]))
-            var.report.drawString(120, 700, str(items[1]))
-            var.report.drawString(270, 700, str(items[2]))
+            var.report.drawString(160, 700, str(items[1]))
+            var.report.drawString(260, 700, str(items[2]))
             var.report.drawString(370, 700, str(items[3]))
-            var.report.drawString(460, 700, str(items[4]))
+            var.report.drawString(470, 700, str(items[4]))
             var.report.line(50, 695, 525, 695)
             query = QtSql.QSqlQuery()
-            query.prepare('select dni, nombre, direccion, municipio, provincia from clientes order by nombre')
+            query.prepare('select dni, nombre, direccion, municipio, provincia from clientes order by dni')
             var.report.setFont('Helvetica', size=8)
             if query.exec():
                 i = 55
-                j = 685
+                j = 680
                 while query.next():
                     if j < 80:
                         var.report.drawString(460, 90, 'Pagina siguiente...')
@@ -32,28 +32,31 @@ class Informes:
                         Informes.topInforme(titulo)
                         Informes.pieInforme(titulo)
                         var.report.setFont('Helvetica-Bold', size=10)
-                        var.report.drawString(65, 700, str(items[0]))
-                        var.report.drawString(120, 700, str(items[1]))
-                        var.report.drawString(270, 700, str(items[2]))
+                        var.report.drawString(60, 700, str(items[0]))
+                        var.report.drawString(160, 700, str(items[1]))
+                        var.report.drawString(260, 700, str(items[2]))
                         var.report.drawString(370, 700, str(items[3]))
-                        var.report.drawString(460, 700, str(items[4]))
+                        var.report.drawString(470, 700, str(items[4]))
                         var.report.line(50, 695, 525, 695)
                         i = 55
-                        j = 685
+                        j = 680
                     var.report.setFont('Helvetica', size=8)
-                    var.report.drawString(i, j, str(query.value(0)))
-                    var.report.drawString(i + 70, j, str(query.value(1)))
-                    var.report.drawString(i + 210, j, str(query.value(2)))
-                    var.report.drawString(i + 300, j, str(query.value(3)))
-                    var.report.drawString(i + 400, j, str(query.value(4)))
-
+                    dni = str(query.value(0)[5:8])
+                    var.report.drawString(i + 5, j, str('*****'+dni+'*'))
+                    var.report.drawString(i + 105, j, str(query.value(1)))
+                    var.report.drawString(i + 205, j, str(query.value(2)))
+                    var.report.drawString(i + 315, j, str(query.value(3)))
+                    var.report.drawString(i + 415, j, str(query.value(4)))
                     j = j - 20
-
             var.report.save()
+            directorio, filename = var.dlgabrir.getSaveFileName(None, 'Guardar Informe', 'informeClientes.pdf', '.pdf')
+            if directorio:
+                os.rename('informes/listadoClientes.pdf', directorio)
+                QtWidgets.QMessageBox.information(None, 'Guardar Informe', 'Informe guardado correctamente')
             rootPath = '.\\informes'
-            for file in os.listdir((rootPath)):
+            '''for file in os.listdir((rootPath)):
                 if file.endswith(('Clientes.pdf')):
-                    os.startfile('%s\%s' % (rootPath, file))
+                    os.startfile('%s\%s' % (rootPath, file))'''
         except Exception as error:
             print('Error informes estado clientes' % str(error))
 
@@ -63,11 +66,52 @@ class Informes:
             titulo = 'LISTADO VEHÍCULOS'
             Informes.pieInforme(titulo)
             Informes.topInforme(titulo)
+            items = ['DNI', 'Matricula', 'Marca', 'Modelo', 'Motor']
+            var.report.setFont('Helvetica-Bold', size=10)
+            var.report.drawString(60, 700, str(items[0]))
+            var.report.drawString(160, 700, str(items[1]))
+            var.report.drawString(260, 700, str(items[2]))
+            var.report.drawString(370, 700, str(items[3]))
+            var.report.drawString(470, 700, str(items[4]))
+            var.report.line(50, 695, 525, 695)
+            query = QtSql.QSqlQuery()
+            query.prepare('select dnicli, matricula, marca, modelo, motor from coches order by dnicli')
+            var.report.setFont('Helvetica', size=8)
+            if query.exec():
+                i = 55
+                j = 680
+                while query.next():
+                    if j < 80:
+                        var.report.drawString(460, 90, 'Pagina siguiente...')
+                        var.report.showPage()
+                        Informes.topInforme(titulo)
+                        Informes.pieInforme(titulo)
+                        var.report.setFont('Helvetica-Bold', size=10)
+                        var.report.drawString(60, 700, str(items[0]))
+                        var.report.drawString(160, 700, str(items[1]))
+                        var.report.drawString(260, 700, str(items[2]))
+                        var.report.drawString(370, 700, str(items[3]))
+                        var.report.drawString(470, 700, str(items[4]))
+                        var.report.line(50, 695, 525, 695)
+                        i = 55
+                        j = 680
+                    var.report.setFont('Helvetica', size=8)
+                    dni = str(query.value(0)[5:8])
+                    var.report.drawString(i + 5, j, str('*****'+dni+'*'))
+                    var.report.drawString(i + 105, j, str(query.value(1)))
+                    var.report.drawString(i + 205, j, str(query.value(2)))
+                    var.report.drawString(i + 315, j, str(query.value(3)))
+                    var.report.drawString(i + 415, j, str(query.value(4)))
+                    j = j - 20
             var.report.save()
-            rootPath = '.\\informes'
+            directorio, filename = var.dlgabrir.getSaveFileName(None, 'Guardar Informe', 'informeCoches.pdf', '.pdf')
+            if directorio:
+                os.rename('informes/listadoCoches.pdf', directorio)
+                QtWidgets.QMessageBox.information(None, 'Guardar Informe', 'Informe guardado correctamente')
+            '''rootPath = '.\\informes'
             for file in os.listdir((rootPath)):
                 if file.endswith(('Autos.pdf')):
-                    os.startfile('%s\%s' % (rootPath, file))
+                    os.startfile('%s\%s' % (rootPath, file))'''
         except Exception as error:
             print('Error informes estado vehiculos' % str(error))
 
